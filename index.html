@@ -162,7 +162,7 @@
             color: white;
         }
 
-        .legend-icon.holst {
+        .legend-icon.host {
             background: #2d5016;
         }
 
@@ -262,7 +262,7 @@
             margin-bottom: 10px;
         }
 
-        .popup-type.holst {
+        .popup-type.host {
             background: #2d5016;
             color: white;
         }
@@ -324,7 +324,7 @@
         <div class="control-panel">
             <button id="toggle-heatmap">🔥 Mostrar Mapa de Calor</button>
             <button id="show-all">👥 Mostrar Todos</button>
-            <button id="show-holst">🏠 Apenas Holst</button>
+            <button id="show-host">🏠 Apenas host</button>
             <button id="show-members">👤 Apenas Membros</button>
         </div>
 
@@ -333,8 +333,8 @@
         <div class="legend">
             <h3>Legenda</h3>
             <div class="legend-item">
-                <div class="legend-icon holst">H</div>
-                <span>Holst (Anfitrião)</span>
+                <div class="legend-icon host">H</div>
+                <span>host (Anfitrião)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-icon membro">M</div>
@@ -411,7 +411,7 @@
             // Control panel buttons
             document.getElementById('toggle-heatmap').addEventListener('click', toggleHeatmap);
             document.getElementById('show-all').addEventListener('click', () => filterMarkers('all'));
-            document.getElementById('show-holst').addEventListener('click', () => filterMarkers('holst'));
+            document.getElementById('show-host').addEventListener('click', () => filterMarkers('host'));
             document.getElementById('show-members').addEventListener('click', () => filterMarkers('membro'));
         }
 
@@ -500,14 +500,14 @@
 
             // Create markers
             data.forEach(item => {
-                const isHolst = item.tipo.toLowerCase().includes('holst');
+                const ishost = item.tipo.toLowerCase().includes('host');
                 
                 // Create custom icon
                 const icon = L.divIcon({
                     className: 'custom-marker',
                     html: `<div style="
-                        background-color: ${isHolst ? '#2d5016' : '#d4c5a0'};
-                        color: ${isHolst ? 'white' : '#2d5016'};
+                        background-color: ${ishost ? '#2d5016' : '#d4c5a0'};
+                        color: ${ishost ? 'white' : '#2d5016'};
                         width: 35px;
                         height: 35px;
                         border-radius: 50%;
@@ -519,7 +519,7 @@
                         border: 3px solid white;
                         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
                         cursor: pointer;
-                    ">${isHolst ? 'H' : 'M'}</div>`,
+                    ">${ishost ? 'H' : 'M'}</div>`,
                     iconSize: [35, 35],
                     iconAnchor: [17, 17]
                 });
@@ -537,8 +537,8 @@
                 // Add popup (on click)
                 const popupContent = `
                     <div class="popup-title">${item.nome}</div>
-                    <div class="popup-type ${isHolst ? 'holst' : 'membro'}">
-                        ${isHolst ? '🏠 Holst (Anfitrião)' : '👤 Membro'}
+                    <div class="popup-type ${ishost ? 'host' : 'membro'}">
+                        ${ishost ? '🏠 host (Anfitrião)' : '👤 Membro'}
                     </div>
                     <div class="popup-info">
                         ${item.info ? `<p>${item.info}</p>` : ''}
@@ -608,13 +608,13 @@
             
             markers.forEach(marker => {
                 const item = marker.itemData;
-                const isHolst = item.tipo.toLowerCase().includes('holst');
+                const ishost = item.tipo.toLowerCase().includes('host');
                 
                 if (filter === 'all') {
                     markerClusterGroup.addLayer(marker);
-                } else if (filter === 'holst' && isHolst) {
+                } else if (filter === 'host' && ishost) {
                     markerClusterGroup.addLayer(marker);
-                } else if (filter === 'membro' && !isHolst) {
+                } else if (filter === 'membro' && !ishost) {
                     markerClusterGroup.addLayer(marker);
                 }
             });
@@ -626,8 +626,8 @@
             
             if (filter === 'all') {
                 document.getElementById('show-all').classList.add('active');
-            } else if (filter === 'holst') {
-                document.getElementById('show-holst').classList.add('active');
+            } else if (filter === 'host') {
+                document.getElementById('show-host').classList.add('active');
             } else if (filter === 'membro') {
                 document.getElementById('show-members').classList.add('active');
             }
